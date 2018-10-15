@@ -1,6 +1,36 @@
 import React, { Component } from "react";
+import axios from "axios"
 
 class Login extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      username:'',
+      password:''
+    }
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  validateUser(){
+    axios.post('localhost:3000/auth',{
+      username: this.state.username,
+      password: this.state.password
+    },{
+      headers: {
+        "Accept": "application/json"
+      }
+    }).then(result => {
+      alert(result)
+    }).catch((err) => {
+      alert(err)
+    })
+  }
+
   render() {
     return (
       <div className="container">
@@ -17,18 +47,24 @@ class Login extends Component {
                       <input
                         className="form-control"
                         placeholder="E-mail"
-                        name="email"
+                        id="username"
+                        name="username"
                         type="email"
-                        autofocus
+                        value={this.state.username}
+                        onChange={this.handleChange}
+                        
                       />
                     </div>{" "}
                     <div className="form-group">
                       <input
                         className="form-control"
                         placeholder="Password"
+                        id="password"
                         name="password"
                         type="password"
-                        value=""
+                        value={this.state.password}                        
+                        onChange={this.handleChange}
+
                       />
                     </div>{" "}
                     <div className="checkbox">
@@ -41,12 +77,12 @@ class Login extends Component {
                         Remember Me{" "}
                       </label>{" "}
                     </div>{" "}
-                    <a
-                      href="index.html"
+                    <button
                       className="btn btn-lg btn-success btn-block"
+                      onClick={()=>this.validateUser()}
                     >
                       Login{" "}
-                    </a>{" "}
+                    </button>{" "}
                   </fieldset>{" "}
                 </form>{" "}
               </div>{" "}
